@@ -14,3 +14,25 @@ resource "aws_vpc" "ot_microservices_dev" {
   }
 }
 
+resource "aws_default_security_group" "default" {
+  vpc_id = aws_vpc.ot_microservices_dev.id
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow all outbound traffic"
+  }
+
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = []
+  }
+}
